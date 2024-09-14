@@ -1,10 +1,12 @@
 package properties
 
-func InitProperties() {
-	parser := newYamlParser()
-	buildPropertiesMap(parser)
-}
+import "config-sync/pkg/zlog"
 
-func Get() *PropertiesMap {
-	return propertiesMap
+var Prop *Properties
+
+func InitProperties() {
+	zlog.Logger.Info("Initializing properties")
+	parser := newYamlParser()
+	Prop = parser.Parse(parser.GetFilePath())
+
 }

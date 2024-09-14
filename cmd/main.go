@@ -1,28 +1,30 @@
 package main
 
 import (
-	"config-sync/internal/backends/nacos"
+	"config-sync/internal/backends/nacos-config"
 	"config-sync/internal/properties"
-	"fmt"
+	"config-sync/pkg/zlog"
 	"os"
 	"os/signal"
-	"time"
 )
 
 func main() {
+	// init logger
+	zlog.NewZapLogger()
+	defer zlog.Sync()
+
+	// start config-sync
+	zlog.Logger.Info("config-sync start")
+
 	properties.InitProperties()
-	nacos.InitNacosConfig()
+	nacos_config.InitNacosConfig()
+
 	wait()
 }
 
 func wait() {
 	c := make(chan os.Signal)
 	signal.Notify(c)
-	go func() {
-		fmt.Println("Go routine running")
-		time.Sleep(3 * time.Second)
-		fmt.Println("Go routine done")
-	}()
 	<-c
-	fmt.Println("bye")
+	zlog.Logger.Info("config-sync stop")
 }

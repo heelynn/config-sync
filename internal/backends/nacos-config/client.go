@@ -1,7 +1,8 @@
-package nacos
+package nacos_config
 
 import (
 	"config-sync/internal/properties"
+	"config-sync/pkg/zlog"
 	"fmt"
 	"github.com/nacos-group/nacos-sdk-go/v2/clients"
 	"github.com/nacos-group/nacos-sdk-go/v2/clients/config_client"
@@ -10,19 +11,33 @@ import (
 	"strings"
 )
 
-// ConfigClientMap 存储配置客户端
-var ConfigClientMap map[string]*config_client.IConfigClient = make(map[string]*config_client.IConfigClient)
+// configClientMap 存储Nacos配置客户端
+var configClientMap map[string]*config_client.IConfigClient = make(map[string]*config_client.IConfigClient)
+
+// nacosConfigMap 存储Nacos配置
+var nacosConfigMap map[string]*properties.NacosConfig = make(map[string]*properties.NacosConfig)
 
 func initClients() {
+	if properties.Prop == nil || properties.Prop.Config.Nacos == nil || len(properties.Prop.Config.Nacos) == 0 {
+		zlog.Logger.Warnf("config.nacos config is empty, skip init config client")
+	}
+	bindNacosConfigMap()
 	initConfigClientByProperties()
+}
+
+// bindNacosConfigMap 绑定Nacos配置到map，id为key
+func bindNacosConfigMap() {
+	for _, nacosProperties := range properties.Prop.Config.Nacos {
+		nacosConfigMap[nacosProperties.Id] = nacosProperties
+	}
 }
 
 // initConfigClientByProperties 初始化配置客户端
 func initConfigClientByProperties() {
-	if properties.Get().NacosMap == nil || len(properties.Get().NacosMap) == 0 {
-		return
-	}
-	for _, nacosProperties := range properties.Get().NacosMap {
+	// if has no nacos-config config, return
+
+	zlog.Logger.Infof("init nacos-config config clients")
+	for _, nacosProperties := range nacosConfigMap {
 		err := initConfigClient(nacosProperties)
 		if err != nil {
 			panic(err)
@@ -30,7 +45,7 @@ func initConfigClientByProperties() {
 	}
 }
 
-func initConfigClient(nacosProperties *properties.NacosProperties) error {
+func initConfigClient(nacosProperties *properties.NacosConfig) error {
 	if nacosProperties == nil {
 		return nil
 	}
@@ -44,6 +59,7 @@ func initConfigClient(nacosProperties *properties.NacosProperties) error {
 		ipPort := strings.Split(server, ":")
 		port, err := strconv.ParseUint(ipPort[1], 10, 64)
 		if err != nil {
+			zlog.Logger.Warnf("fail to parse server port [%s]", ipPort[1])
 			continue
 		}
 		serverConfigs = append(serverConfigs, constant.ServerConfig{
@@ -52,7 +68,7 @@ func initConfigClient(nacosProperties *properties.NacosProperties) error {
 		})
 	}
 	if len(serverConfigs) == 0 {
-		return fmt.Errorf("nacos server address is empty")
+		return fmt.Errorf("nacos-config server address is empty")
 	}
 
 	// 客户端配置
@@ -73,8 +89,9 @@ func initConfigClient(nacosProperties *properties.NacosProperties) error {
 		"clientConfig":  clientConfig,
 	})
 	if err != nil {
+		zlog.Logger.Errorf("fail to create nacos-config config client, err: %v", err)
 		return err
 	}
-	ConfigClientMap[nacosProperties.Id] = &configClient
+	configClientMap[nacosProperties.Id] = &configClient
 	return nil
 }

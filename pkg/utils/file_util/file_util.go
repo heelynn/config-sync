@@ -1,7 +1,7 @@
 package file_util
 
 import (
-	"fmt"
+	"config-sync/pkg/zlog"
 	"os"
 	"path/filepath"
 )
@@ -11,7 +11,7 @@ func WriteToFile(fileName string, content string) error {
 	// 使用os.Create创建或打开文件
 	file, err := os.Create(fileName)
 	if err != nil {
-		fmt.Printf("Error creating file: %s\n", err)
+		zlog.Logger.Errorf("Error creating file: %s\n", err)
 		return err
 	}
 	defer file.Close() // 确保文件在函数结束时关闭
@@ -20,11 +20,11 @@ func WriteToFile(fileName string, content string) error {
 	contents := []byte(content)
 	_, err = file.Write(contents)
 	if err != nil {
-		fmt.Printf("Error writing to file: %s\n", err)
+		zlog.Logger.Errorf("Error writing to file: %s\n", err)
 		return err
 	}
 
-	fmt.Printf("File '%s' has been created and written to.\n", fileName)
+	zlog.Logger.Infof("File '%s' has been created and written to.\n", fileName)
 	return nil
 }
 

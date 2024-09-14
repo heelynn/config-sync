@@ -1,11 +1,23 @@
 package properties
 
+// Properties 根配置
 type Properties struct {
-	Nacos []*NacosProperties `yaml:"nacos"`
+	Config    *Config    `yaml:"config"`
+	Discovery *Discovery `yaml:"discovery"`
+}
+
+// 来自配置中心的配置
+type Config struct {
+	Nacos []*NacosConfig `yaml:"nacos"`
+}
+
+// 来自注册中心的配置
+type Discovery struct {
+	Nacos []*NacosDiscovery `yaml:"nacos"`
 }
 
 // CheckId 检查配置的Id是否重复
-func (y *Properties) CheckId() {
+func (y *Config) CheckId() {
 	//检查Nacos配置的Id是否重复
 	if y.Nacos != nil && len(y.Nacos) > 0 {
 		seen := make(map[string]bool, len(y.Nacos))
@@ -18,7 +30,7 @@ func (y *Properties) CheckId() {
 	}
 }
 
-type NacosProperties struct {
+type NacosConfig struct {
 	Id            string   `yaml:"id"`
 	ServerAddr    string   `yaml:"server_addr"`
 	Namespace     string   `yaml:"namespace"`
@@ -31,16 +43,29 @@ type NacosProperties struct {
 }
 
 // generateId 设置id
-func (y *NacosProperties) generateId() {
-	y.check()
-	if y.Id == "" {
-		y.Id = y.ServerAddr + "_" + y.Namespace + "_" + y.Group
+func (y *NacosConfig) check() {
+	if y.Id == "" || y.ServerAddr == "" || y.Namespace == "" || y.Group == "" || len(y.PropertyNames) == 0 || y.FilePath == "" {
+		panic("NacosConfig must have id, server_addr, namespace, group, property_names, file_path")
 	}
 }
 
+type NacosDiscovery struct {
+	Id              string   `yaml:"id"`
+	ServerAddr      string   `yaml:"server_addr"`
+	Namespace       string   `yaml:"namespace"`
+	Username        string   `yaml:"username"`
+	Password        string   `yaml:"password"`
+	Group           string   `yaml:"group"`
+	ServiceNames    []string `yaml:"service_names"`
+	Template        string   `yaml:"tempalte"`
+	RefreshInterval string   `yaml:"refresh_interval"`
+	FilePath        string   `yaml:"file_path"` //同步到的文件目录，绝对路径
+	Command         string   `yaml:"command"`
+}
+
 // generateId 设置id
-func (y *NacosProperties) check() {
-	if y.ServerAddr == "" || y.Namespace == "" || y.Group == "" || len(y.PropertyNames) == 0 || y.FilePath == "" {
-		panic("Nacos Properties is invalid")
+func (y *NacosDiscovery) check() {
+	if y.Id == "" || y.ServerAddr == "" || y.Namespace == "" || y.Group == "" || len(y.ServiceNames) == 0 || y.FilePath == "" || y.Template == "" || y.RefreshInterval == "" {
+		panic("NacosConfig must have id, server_addr, namespace, group, property_names, file_path")
 	}
 }
