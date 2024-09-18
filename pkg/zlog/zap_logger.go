@@ -7,7 +7,7 @@ import (
 var Logger *zap.SugaredLogger
 var baseLogger *zap.Logger
 
-func NewZapLogger() {
+func init() {
 	baseLogger, _ = zap.NewDevelopment()
 	Logger = baseLogger.Sugar()
 }

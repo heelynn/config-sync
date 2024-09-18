@@ -1,23 +1,18 @@
 package main
 
 import (
-	"config-sync/internal/backends/nacos-config"
-	"config-sync/internal/properties"
+	_ "config-sync/internal/backends/config/nacos"
+	_ "config-sync/internal/backends/discovery/nacos"
+	_ "config-sync/internal/properties"
 	"config-sync/pkg/zlog"
 	"os"
 	"os/signal"
 )
 
 func main() {
-	// init logger
-	zlog.NewZapLogger()
-	defer zlog.Sync()
 
-	// start config-sync
 	zlog.Logger.Info("config-sync start")
-
-	properties.InitProperties()
-	nacos_config.InitNacosConfig()
+	defer zlog.Sync()
 
 	wait()
 }

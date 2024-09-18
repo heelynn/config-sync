@@ -2,6 +2,7 @@ package file_util
 
 import (
 	"config-sync/pkg/zlog"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 )
@@ -28,12 +29,44 @@ func WriteToFile(fileName string, content string) error {
 	return nil
 }
 
+func ReadFile(fileName string) ([]byte, error) {
+	file, err := os.Open(fileName)
+	if err != nil {
+		zlog.Logger.Errorf("Error opening file: %s\n", err)
+		return nil, err
+	}
+	defer file.Close()
+	content, err := ioutil.ReadAll(file)
+
+	if err != nil {
+		zlog.Logger.Errorf("Error reading file: %s\n", err)
+		return nil, err
+	}
+	return content, nil
+}
+
 func GetFileName(path string, fileName string) string {
 	if IsLastCharPathSeparator(path) {
 		return filepath.Join(path, fileName)
 	} else {
 		return filepath.Join(path, string(filepath.Separator), fileName)
 	}
+}
+
+func RemoveFile(filePath string) error {
+	// 指定要删除的文件路径
+
+	// 尝试删除文件
+	err := os.Remove(filePath)
+	if err != nil {
+		// 如果发生错误，打印错误信息
+		zlog.Logger.Errorf("Error removing file: %s", err)
+		return err
+	}
+
+	// 如果成功删除，打印成功信息
+	zlog.Logger.Infof("File successfully removed: %s", filePath)
+	return nil
 }
 
 // IsLastCharPathSeparator 检查给定的路径字符串的最后一个字符是否为文件路径分隔符

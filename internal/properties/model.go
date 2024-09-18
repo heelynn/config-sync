@@ -57,15 +57,16 @@ type NacosDiscovery struct {
 	Password        string   `yaml:"password"`
 	Group           string   `yaml:"group"`
 	ServiceNames    []string `yaml:"service_names"`
-	Template        string   `yaml:"tempalte"`
-	RefreshInterval string   `yaml:"refresh_interval"`
-	FilePath        string   `yaml:"file_path"` //同步到的文件目录，绝对路径
+	Template        string   `yaml:"template"`
+	RefreshInterval int      `yaml:"refresh_interval"`
+	FilePath        string   `yaml:"file_path"`   //同步到的文件目录，绝对路径
+	FileSuffix      string   `yaml:"file_suffix"` //文件后缀名
 	Command         string   `yaml:"command"`
 }
 
 // generateId 设置id
 func (y *NacosDiscovery) check() {
-	if y.Id == "" || y.ServerAddr == "" || y.Namespace == "" || y.Group == "" || len(y.ServiceNames) == 0 || y.FilePath == "" || y.Template == "" || y.RefreshInterval == "" {
+	if y.Id == "" || y.ServerAddr == "" || y.Namespace == "" || y.Group == "" || len(y.ServiceNames) == 0 || y.FilePath == "" || y.Template == "" || y.RefreshInterval == 0 {
 		panic("NacosConfig must have id, server_addr, namespace, group, property_names, file_path")
 	}
 }

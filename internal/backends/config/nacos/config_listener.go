@@ -1,4 +1,4 @@
-package nacos_config
+package nacos
 
 import (
 	"config-sync/pkg/utils/file_util"
@@ -26,7 +26,7 @@ func listenConfig(configClient config_client.IConfigClient, dataId, group string
 		Group:  group,
 		OnChange: func(namespace, group, dataId, data string) {
 			zlog.Logger.Infof("Config changed, dataId: %s, group: %s", dataId, group)
-			// Get nacos-config properties
+			// Get nacos properties
 			nacosProperties := nacosConfigMap[nacosPropertiesId]
 			// Write to file
 			fileName := file_util.GetFileName(nacosProperties.FilePath, dataId)
