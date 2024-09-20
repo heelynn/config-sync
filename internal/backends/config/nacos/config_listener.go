@@ -34,7 +34,8 @@ func listenConfig(configClient config_client.IConfigClient, dataId, group string
 			if err != nil {
 				zlog.Logger.Error(err)
 			}
-			zlog.Logger.Infof("Config written to file, fileName: %s", fileName)
+			zlog.Logger.Infof("nacos config generated config written to file,fileName: %s", fileName)
+			zlog.Logger.Debugf("[%s] write content  \n %s ", fileName, data)
 			// Execute command
 			if nacosProperties.Command != "" {
 				command, err := os_util.ExecuteCommand(nacosProperties.Command)

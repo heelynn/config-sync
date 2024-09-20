@@ -1,5 +1,5 @@
 upstream {{.Name}} {
     {{- range .Instances }}
-    server {{.Host}}:{{.Port}};
+    server {{.Host}}:{{.Port}} weight={{.Weight}};
     {{- end }}
 }

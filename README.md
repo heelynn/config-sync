@@ -10,53 +10,28 @@
 
 - 下载最新版本安装包：https://github.com/heelynn/conf-sync/releases/latest
 
+## 启动服务
 - windows 
 进入`bin`目录，双击`startup.cmd`文件
 
 - macOS/Linux
+进入`bin`目录，执行`startup.sh`命令
 
- ```shell
- # 使用shell
- $ mkdir -p $HOME/.j/bin $HOME/.j/version
- # 选择liunx/macos版本下载安装包，下载地址：https://github.com/heelynn/j/releases/latest
- 
- # 将j文件解压到$HOME/.j/bin目录下 
- # 给j文件添加可执行权限
- $ chmod +x $HOME/.j/bin/j
- 
- # 配置环境变量（适用于 bash、zsh）
- $ export JAVA_HOME="$HOME/.j/java"
- $ export PATH="$HOME/.j/bin:$JAVA_HOME/bin:$PATH"
- ```
+## 配置文件
 
-## 使用方法
+请参考配置文件示例[英文](https://github.com/heelynn/conf-sync/doc/application.yaml.example)/[中文](https://github.com/heelynn/conf-sync/doc/application-zh.yaml.example_zh)
+目前支持的配置项：
+`config` : 配置中心配置，目前支持`nacos`
+- 从配置中心拉取的配置，写入本地文件文件路径，拉取成功后会执行command配置的命令
 
-### 下载并安装Java
-将下载好的Java安装包`Redhat、openJDk、OracleJDK等`解压到`$HOME/.j/version`目录下。
-建议修改为简单文件夹名，如`Java8、Java11、Java17`，方便管理。
- ```shell
- # 列出已安装的Java版本
- $ ls $HOME/.j/version
- Java8
- Java11
- Java17
- ```
+`discovery` : 注册中心配置，目前支持`nacos`
+- 注册中心地址，用于定时拉取服务列表，拉取成功后会根据模版文件生成配置文件，并执行command配置的命令
+- 模版文件示例：(以nginx的upstream配置为例[upstream.tmpl](https://github.com/heelynn/conf-sync/doc/upstream.yaml.example)，自定义其他模版完全遵照以下命名规则取值即可)
+  - {{.Name}} 代表服务名
+  - {{- range .Instances }} 代表遍历服务列表，下面有子项：
+    - {{.Host}} 代表服务地址
+    - {{.Port}} 代表服务端口
+    - {{.Weight}} 代表服务权重
 
-### 查看当前Java版本
-`使用j命令`查看当前Java版本，与`$HOME/.j/version`目录下Java版本对应
- ```shell
- $ j ls
-  java8
-  java11
- ```
-
-`使用j命令`切换Java版本，`j ls` 命令查看当前已安装的Java版本
- ```shell
- $ j use java8
- ```
-### 验证Java版本
- ```shell
- $ java -version
- ```
 
 

@@ -1,5 +1,7 @@
 #!/bin/sh
 
+chmod +x conf-sync
+
 echo "conf-sync starting..."
 
 # Get the directory of the current script

@@ -81,13 +81,16 @@ func CheckFileChangedAndExecuteCommand(filePath string, templateContent string, 
 	} else {
 		//将新文件内容写入原文件
 		file_util.WriteToFile(filePath, templateContent)
-		zlog.Logger.Infof("write content  \n %s ", templateContent)
+		zlog.Logger.Infof("nacos discovery generated config written to file,fileName: %s", filePath)
+		zlog.Logger.Debugf("[%s] write content  \n %s ", filePath, templateContent)
 		//执行命令
-		executeCommand, err := os_util.ExecuteCommand(command)
-		if err != nil {
-			return false, err
+		if command != "" {
+			executeCommand, err := os_util.ExecuteCommand(command)
+			if err != nil {
+				return false, err
+			}
+			zlog.Logger.Info("execute command result: ", executeCommand)
 		}
-		zlog.Logger.Info("execute command result: ", executeCommand)
 		return true, nil
 	}
 
