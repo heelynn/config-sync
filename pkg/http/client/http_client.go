@@ -92,7 +92,7 @@ func (c *HttpClient) doGetResponseHostIndex(hostIndex int) (*http.Response, erro
 	// 发送请求
 	client := &http.Client{}
 	resp, err := client.Do(req)
-	zlog.Logger.Infof("HTTP request url: %s, method: %s ,response status: [%d]", urlWithParams, req.Method, resp.StatusCode)
+	zlog.Logger.Debugf("HTTP request url: %s, method: %s ,response status: [%d]", urlWithParams, req.Method, resp.StatusCode)
 	if err != nil {
 		return nil, err
 	}
@@ -111,6 +111,7 @@ func (c *HttpClient) doHostIndex(hostIndex int) (statusCode int, body []byte, er
 	if err != nil {
 		return 0, nil, err
 	}
+	zlog.Logger.Debugf("HTTP response status: [%d], body: [%s]", resp.StatusCode, string(body))
 	return resp.StatusCode, body, nil
 }
 

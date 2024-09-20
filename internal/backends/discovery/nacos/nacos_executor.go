@@ -36,6 +36,7 @@ func (n *NacosExecutor) Execute() error {
 	httpClient := client.NewHttpClientHosts(hosts, client.GET, "/nacos/v1/ns/instance/list")
 	httpClient.AddHeader("Content-Type", "application/x-www-form-urlencoded")
 	httpClient.AddParam("namespaceId", n.nacosDiscovery.Namespace)
+	httpClient.AddParam("groupName", n.nacosDiscovery.Group)
 	httpClient.AddParam("healthyOnly", "true")
 	for _, serviceName := range n.nacosDiscovery.ServiceNames {
 		httpClient.AddParam("serviceName", serviceName)
@@ -50,11 +51,9 @@ func (n *NacosExecutor) Execute() error {
 		// 结果解析
 		var instance NacosInstance
 		err = json.Unmarshal(body, &instance)
-		zlog.Logger.Infof("nacosDiscovery request success with body %s", body)
 		if err != nil {
 			zlog.Logger.Errorf("nacosDiscovery unmarshal failed with err %s", err)
 		}
-		zlog.Logger.Infof("nacosDiscovery request success with body %s", body)
 		// 写入文件
 		var instances []discovery.InstanceResult = make([]discovery.InstanceResult, 0)
 		if instance.Hosts != nil {
@@ -78,13 +77,13 @@ func (n *NacosExecutor) Execute() error {
 		}
 		path := filepath.Join(n.nacosDiscovery.FilePath, string(filepath.Separator), fileName)
 
-		// 写入文件，旧文件
-		err = discovery.WriteTemplate(n.nacosDiscovery.Template, path, discoveryResults)
+		// 获取模板生成的内容
+		content, err := discovery.GenerateTemplate(n.nacosDiscovery.Template, discoveryResults)
 		if err != nil {
 			return err
 		}
 		// 检查文件是否有变化，并执行命令
-		_, err = discovery.CheckFileChangedAndExecuteCommand(path, n.nacosDiscovery.Command)
+		_, err = discovery.CheckFileChangedAndExecuteCommand(path, content, n.nacosDiscovery.Command)
 		if err != nil {
 			return err
 		}
@@ -114,7 +113,6 @@ func (n *NacosExecutor) TickerExecute() error {
 			case <-ticker.C:
 				// 每分钟执行一次的代码
 				n.Execute()
-				zlog.Logger.Infof("execute nacos discovery task [%s]", n.nacosDiscovery.Id)
 			}
 		}
 	}()

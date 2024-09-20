@@ -1,12 +1,23 @@
 package properties
 
-import "config-sync/pkg/zlog"
+import (
+	"config-sync/pkg/startup"
+	"config-sync/pkg/zlog"
+)
 
 var Prop *Properties
 
 func init() {
-	zlog.Logger.Info("Initializing properties")
+
 	parser := newYamlParser()
-	Prop = parser.Parse(parser.GetFilePath())
+	filePath := parser.GetFilePath()
+	if startup.RootConfigPath != "" {
+		filePath = startup.RootConfigPath
+	}
+	Prop = parser.Parse(filePath)
+	SetLogDefaultValues(Prop)
+	log := Prop.Log
+	zlog.InitLog(log.Output, log.Level, log.Path, log.MaxSize, log.MaxAge, log.MaxBackups)
+	zlog.Logger.Info("Initializing properties")
 
 }

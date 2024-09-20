@@ -1,0 +1,75 @@
+# *******************
+# 日志配置
+#    output：控制台或文件
+#        如果输出是控制台，只有level有效
+#    level：debug, info, warn, error, fatal
+#    path：日志文件路径
+#    max-size：日志文件的最大大小，单位为MB
+#    max-age：日志文件的最大年龄，单位为天
+#    max-backups：最大备份文件数量
+# *******************
+log:
+  output: console
+  level: debug
+  path: ../logs
+  max-size: 100
+  max-age: 30
+  max-backups: 10
+# *******************
+# 从配置中心同步
+# *******************
+config:
+  # *******************
+  # 从[nacos]配置中心同步
+  # id: 配置的唯一标识
+  # server_addr: nacos服务器地址
+  # namespace: 配置的命名空间
+  # username: nacos账户的用户名
+  # password: nacos账户的密码
+  # group: nacos配置的组
+  # property_names: nacos配置的DataId，将转换为文件名
+  # file_path: 存储配置的文件路径
+  # command：配置同步后的执行命令
+  # *******************
+  nacos:
+    - id: test-windows
+      server_addr: 127.0.0.1:8848
+      namespace: xxx
+      username: nacos
+      password: nacos
+      group: DEFAULT_GROUP
+      property_names:
+        - aaaa.yaml
+      file_path: "/usr/local/conf-sync"
+      command: echo "Hello, Nacos! windows"
+# *******************
+# 从注册中心同步
+# 从模板生成配置文件
+# *******************
+discovery:
+  # *******************
+  # 从[nacos]注册中心同步
+  # id: 注册的唯一标识
+  # server_addr: nacos服务器地址
+  # namespace: nacos的命名空间
+  # group: nacos的组
+  # template：模板文件路径，使用golang模板引擎
+  # refresh_interval：从nacos刷新的间隔，单位为秒
+  # service_names: nacos服务名称
+  # file_path: 存储配置的文件路径
+  # file_suffix：配置文件的文件后缀
+  #      文件名将为 service_name + "." + file_suffix
+  # command：配置同步后的执行命令
+  # *******************
+  nacos:
+    - id: test-windows
+      server_addr: 127.0.0.1:8848
+      namespace: xxx
+      group: DEFAULT_GROUP
+      template: ../conf/upstream.tmpl
+      refresh_interval: 60
+      service_names:
+        - xxx
+      file_path: "/usr/local/conf-sync"
+      file_suffix: conf
+      command: echo 'Hello, Nacos Discovery! windows'

@@ -4,6 +4,7 @@ import (
 	_ "config-sync/internal/backends/config/nacos"
 	_ "config-sync/internal/backends/discovery/nacos"
 	_ "config-sync/internal/properties"
+	_ "config-sync/pkg/startup"
 	"config-sync/pkg/zlog"
 	"os"
 	"os/signal"
@@ -11,7 +12,7 @@ import (
 
 func main() {
 
-	zlog.Logger.Info("config-sync start")
+	zlog.Logger.Info("--------- start ---------")
 	defer zlog.Sync()
 
 	wait()
@@ -21,5 +22,5 @@ func wait() {
 	c := make(chan os.Signal)
 	signal.Notify(c)
 	<-c
-	zlog.Logger.Info("config-sync stop")
+	zlog.Logger.Info(("--------- stoped ---------"))
 }

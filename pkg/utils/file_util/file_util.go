@@ -53,6 +53,18 @@ func GetFileName(path string, fileName string) string {
 	}
 }
 
+// FileExists 检查文件或目录是否存在
+func FileExists(path string) (bool, error) {
+	_, err := os.Stat(path)
+	if err == nil {
+		return true, nil // 文件或目录存在
+	}
+	if os.IsNotExist(err) {
+		return false, nil // 文件或目录不存在
+	}
+	return false, err // 其他错误
+}
+
 func RemoveFile(filePath string) error {
 	// 指定要删除的文件路径
 

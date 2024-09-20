@@ -1,13 +1,11 @@
 package properties
 
 import (
-	"config-sync/pkg/zlog"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 )
 
 func newYamlParser() *YamlParser {
-	zlog.Logger.Infof("Use YamlParser")
 	return &YamlParser{}
 }
 
@@ -26,7 +24,6 @@ func (parser *YamlParser) Parse(yamlFile string) *Properties {
 	if err != nil {
 		panic(err)
 	}
-	zlog.Logger.Infof("\n-- load yaml properties  -- \n%s", string(yamlData))
 
 	// 创建一个变量来接收解析后的数据
 	var prop Properties
@@ -36,7 +33,7 @@ func (parser *YamlParser) Parse(yamlFile string) *Properties {
 	if err != nil {
 		panic(err)
 	}
-
+	prop.check()
 	return &prop
 }
 

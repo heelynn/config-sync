@@ -1,0 +1,5 @@
+upstream {{.Name}} {
+    {{- range .Instances }}
+    server {{.Host}}:{{.Port}};
+    {{- end }}
+}
