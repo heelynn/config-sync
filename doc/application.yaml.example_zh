@@ -1,6 +1,6 @@
 # *******************
 # 日志配置
-#    output：控制台或文件
+#    output：console 或 file
 #        如果输出是控制台，只有level有效
 #    level：debug, info, warn, error, fatal
 #    path：日志文件路径
@@ -28,8 +28,8 @@ config:
   # password: nacos账户的密码
   # group: nacos配置的组
   # property_names: nacos配置的DataId，将转换为文件名
-  # file_path: 存储配置的文件路径
-  # command：配置同步后的执行命令
+  # file_path: 存储本机生成的配置的文件路径
+  # command：配置生成后的执行命令
   # *******************
   nacos:
     - id: test-windows
@@ -56,7 +56,7 @@ discovery:
   # template：模板文件路径，使用golang模板引擎
   # refresh_interval：从nacos刷新的间隔，单位为秒
   # service_names: nacos服务名称
-  # file_path: 存储配置的文件路径
+  # file_path: 存储本机生成的配置的文件路径
   # file_suffix：配置文件的文件后缀
   #      文件名将为 service_name + "." + file_suffix
   # command：配置同步后的执行命令
