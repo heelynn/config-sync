@@ -3,6 +3,7 @@ package nacos
 import (
 	"config-sync/internal/backends/discovery"
 	"config-sync/internal/properties"
+	"config-sync/internal/sync"
 	"config-sync/pkg/http/client"
 	"config-sync/pkg/zlog"
 	"encoding/json"
@@ -83,7 +84,7 @@ func (n *NacosExecutor) Execute() error {
 			return err
 		}
 		// 检查文件是否有变化，并执行命令
-		_, err = discovery.CheckFileChangedAndExecuteCommand(path, content, n.nacosDiscovery.Command)
+		err = sync.CheckFileChangedAndExecuteCommand(path, content, n.nacosDiscovery.Command)
 		if err != nil {
 			return err
 		}
