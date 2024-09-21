@@ -27,7 +27,7 @@ func wait() {
 
 		sig = <-c
 		switch sig {
-		case syscall.SIGINT, syscall.SIGTERM:
+		case syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT:
 			zlog.Logger.Infof("--------- stop signal %v ---------", sig)
 			return
 		default:
