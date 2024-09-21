@@ -54,6 +54,7 @@ discovery:
   # namespace: nacos的命名空间
   # group: nacos的组
   # template：模板文件路径，使用golang模板引擎
+  #      文件必须放在conf目录下
   # refresh_interval：从nacos刷新的间隔，单位为秒
   # service_names: nacos服务名称
   # file_path: 存储本机生成的配置的文件路径
@@ -66,7 +67,7 @@ discovery:
       server_addr: 127.0.0.1:8848
       namespace: xxx
       group: DEFAULT_GROUP
-      template: ../conf/upstream.tmpl
+      template: upstream.tmpl
       refresh_interval: 60
       service_names:
         - xxx

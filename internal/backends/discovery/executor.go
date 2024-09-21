@@ -2,7 +2,11 @@ package discovery
 
 import (
 	"bytes"
+	"config-sync/pkg/startup"
 	"config-sync/pkg/utils/file_util"
+	"config-sync/pkg/zlog"
+	"path/filepath"
+	"strings"
 	"text/template"
 )
 
@@ -43,6 +47,10 @@ type Executor interface {
 
 func GenerateTemplate(templateFile string, instances DiscoveryResult) (string, error) {
 	if templateFile != "" {
+		if !strings.HasPrefix(templateFile, "/") {
+			templateFile = startup.RootConfigPath + string(filepath.Separator) + templateFile
+			zlog.Logger.Info("--- templateFile ", templateFile)
+		}
 		file, err := file_util.ReadFile(templateFile)
 		if err != nil {
 			return "", err

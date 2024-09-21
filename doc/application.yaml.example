@@ -54,6 +54,7 @@ discovery:
   # namespace: namespace of the nacos
   # group: group of the nacos
   # template: template file path,use golang template engine
+  #     The file must be placed in the "conf" directory.
   # refresh_interval: refresh interval from nacos , unit is second
   # service_names: nacos service name
   # file_path: file path to store the configuration
@@ -66,7 +67,7 @@ discovery:
       server_addr: 127.0.0.1:8848
       namespace: xxx
       group: DEFAULT_GROUP
-      template: ../upstream.tmpl
+      template: upstream.tmpl
       refresh_interval: 60
       service_names:
         - xxx

@@ -1,7 +1,9 @@
 package properties
 
 import (
+	"config-sync/pkg/startup"
 	"config-sync/pkg/utils/file_util"
+	"path/filepath"
 )
 
 // Properties 根配置
@@ -96,8 +98,9 @@ func (y *NacosDiscovery) check() {
 	if y.Id == "" || y.ServerAddr == "" || y.Namespace == "" || y.Group == "" || len(y.ServiceNames) == 0 || y.FilePath == "" || y.Template == "" || y.RefreshInterval == 0 {
 		panic("NacosConfig must have id, server_addr, namespace, group, property_names, file_path")
 	}
-	if ok, _ := file_util.FileExists(y.Template); !ok {
-		panic("NacosDiscovery id [" + y.Id + "] template not exists: " + y.Template)
+	templatePath := filepath.Join(startup.RootConfigPath, string(filepath.Separator), y.Template)
+	if ok, _ := file_util.FileExists(templatePath); !ok {
+		panic("NacosDiscovery id [" + y.Id + "] template not exists: " + templatePath)
 	}
 }
 

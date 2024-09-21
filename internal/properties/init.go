@@ -11,8 +11,8 @@ func init() {
 
 	parser := newYamlParser()
 	filePath := parser.GetFilePath()
-	if startup.RootConfigPath != "" {
-		filePath = startup.RootConfigPath
+	if startup.RootConfig != "" {
+		filePath = startup.RootConfig
 	}
 	Prop = parser.Parse(filePath)
 	SetLogDefaultValues(Prop)
