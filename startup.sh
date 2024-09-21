@@ -1,8 +1,8 @@
 #!/bin/sh
 
-chmod +x conf-sync
+chmod +x config-sync
 
-echo "conf-sync starting..."
+echo "config-sync starting..."
 
 # Get the directory of the current script
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
@@ -11,13 +11,14 @@ CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 BASE_DIR="$(dirname "$CURRENT_DIR")"
 
 # App file path
-APP="$BASE_DIR/bin/conf-sync"
+APP="$BASE_DIR/bin/config-sync"
 
 # App arguments
-APP_ARGS="-config $BASE_DIR/conf/application.yaml"
+APP_ARGS="-config $BASE_DIR/conf/application.yaml -config-path $BASE_DIR/conf"
 
 # Command to execute the app
 COMMAND="$APP $APP_ARGS"
 
+echo $COMMAND
 # Execute the command
-eval $COMMAND
+$COMMAND
