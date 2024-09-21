@@ -21,6 +21,6 @@ func main() {
 func wait() {
 	c := make(chan os.Signal)
 	signal.Notify(c)
-	<-c
-	zlog.Logger.Info(("--------- stoped ---------"))
+	sig := <-c
+	zlog.Logger.Infof("--------- stop signal %v ---------", sig)
 }
