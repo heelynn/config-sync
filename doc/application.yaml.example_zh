@@ -8,7 +8,7 @@
 #    max-backups：最大备份文件数量
 # *******************
 log:
-  output: console
+  output: file
   level: info
   max-size: 100
   max-age: 30

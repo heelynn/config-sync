@@ -8,7 +8,7 @@
 #   max-backups: maximum number of backup files
 # ********************
 log:
-  output: console
+  output: file
   level: debug
   max-size: 100
   max-age: 30
