@@ -1,24 +1,4 @@
 @echo off
-:: 执行 wmic 命令并捕获输出
-for /f "tokens=1,2" %%a in ('wmic process where "name='config-sync.exe'" get processid^,commandline /value') do (
-    set "%%a=%%b"
-)
-
-:: 检查是否成功捕获到进程 ID
-if defined PROCESSID (
-    echo config-sync.exe found with CommandLine "%COMMANDLINE%" PID %PROCESSID%.
-    set /p ANSWER="Do you want start a new instance of config-sync? (y/n): "
-
-    if /i "%ANSWER%"=="y" (
-        :: 在这里放置继续执行的命令
-    ) else if /i "%ANSWER%"=="n" (
-        exit /b 0
-        :: 在这里放置不继续执行的命令
-    ) else (
-        echo Invalid input, please type 'y' or 'n'.
-    )
-)
-
 
 echo config-sync starting...
 
