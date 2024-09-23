@@ -32,6 +32,8 @@ func InitLog(Output string, Level string, Path string, MaxSize int, MaxAge int, 
 	} else if logConfig.Output == "file" {
 		// 打印到文件
 		writeSyncer = getLogWriter()
+	} else {
+		panic("unknown log output type :cd c" + logConfig.Output)
 	}
 	encoder := getEncoder()
 	core := zapcore.NewCore(encoder, writeSyncer, getLogLevel())
