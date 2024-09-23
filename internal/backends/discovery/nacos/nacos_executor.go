@@ -57,7 +57,11 @@ func (n *NacosExecutor) Execute() error {
 		}
 		// 写入文件
 		var instances []discovery.InstanceResult = make([]discovery.InstanceResult, 0)
-		if instance.Hosts != nil {
+		if instance.Hosts == nil || len(instance.Hosts) == 0 {
+			// if instance.Hosts is nil or empty, skip this instance
+			zlog.Logger.Warnf("nacosDiscovery instance hosts is nil")
+			return nil
+		} else {
 			for _, host := range instance.Hosts {
 				instances = append(instances, discovery.InstanceResult{
 					Host:   host.IP,
