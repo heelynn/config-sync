@@ -1,9 +1,8 @@
 # *******************
-# log configuration
+# log configuration : log path is log/info.log
 #   output: console or file
 #       if output is console, just level is valid
 #   level: debug, info, warn, error, fatal
-#   path: log file path
 #   max-size: maximum size of log file in MB
 #   max-age: maximum age of log file in days
 #   max-backups: maximum number of backup files
@@ -11,7 +10,6 @@
 log:
   output: console
   level: debug
-  path: ../logs
   max-size: 100
   max-age: 30
   max-backups: 10

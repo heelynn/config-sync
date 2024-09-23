@@ -1,9 +1,8 @@
 # *******************
-# 日志配置
+# 日志配置 : log文件目录为 logs/info.log
 #    output：console 或 file
 #        如果输出是控制台，只有level有效
 #    level：debug, info, warn, error, fatal
-#    path：日志文件路径
 #    max-size：日志文件的最大大小，单位为MB
 #    max-age：日志文件的最大年龄，单位为天
 #    max-backups：最大备份文件数量
@@ -11,7 +10,6 @@
 log:
   output: console
   level: debug
-  path: ../logs
   max-size: 100
   max-age: 30
   max-backups: 10

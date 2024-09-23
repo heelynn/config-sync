@@ -1,6 +1,7 @@
 package zlog
 
 import (
+	"config-sync/pkg/startup"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"os"
@@ -15,12 +16,14 @@ func getLogWriter() zapcore.WriteSyncer {
 		MaxAges：保留旧文件的最大天数
 		Compress：是否压缩 / 归档旧文件
 	*/
-	_, err := os.Stat(logConfig.Path)
+	logPath := startup.RootLogPath
+
+	_, err := os.Stat(logPath)
 	if os.IsNotExist(err) {
-		panic("log file path [" + logConfig.Path + "] not exists")
+		panic("log file path [" + logPath + "] not exists")
 	}
 	lumberJackLogger := &lumberjack.Logger{
-		Filename:   filepath.Join(logConfig.Path, string(filepath.Separator), "info.log"),
+		Filename:   filepath.Join(logPath, string(filepath.Separator), "info.log"),
 		MaxSize:    logConfig.MaxSize,
 		MaxBackups: logConfig.MaxBackups,
 		MaxAge:     logConfig.MaxAge,
