@@ -32,7 +32,6 @@ func wait() {
 			return
 		default:
 			//zlog.Logger.Debugf("--------- receive signal %v ---------", sig)
-			return
 		}
 
 	}
