@@ -34,7 +34,30 @@
   - {{- range .Instances }} 代表遍历服务列表，下面有子项：
     - {{.Host}} 代表服务地址
     - {{.Port}} 代表服务端口
-    - {{.Weight}} 代表服务权重
+    - {{.Weight}} 代表服务权重 
+- `nginx upstream` 使用示例：
+- command配置：可以执行自定义命令，比如重启nginx，执行`restart-nginx.sh`
+  - 在nginx中`慎重使用{{.Weight}}`，如果数字不合法配置测试会不通过，比如权重为零，会导致nginx启动失败
+  - `restart-nginx.sh`，脚本内容如下：
+```shell
+#!/bin/bash
 
+# 测试 Nginx 配置文件
+nginx -t
+
+# 检查上一个命令的退出状态码
+if [ $? -eq 0 ]; then
+    echo "Nginx 配置测试成功。正在重新加载 Nginx..."
+
+    # 重新加载 Nginx 配置
+    nginx -s reload
+else
+    # 由于某些原因导致 Nginx 配置测试失败
+    # 此处是为了改动配置文件，会导致config-sync下次比对时文件内容发生变化，触发重新生成配置文件以及执行命令
+    echo " " > /etc/nginx/conf.d/aaa.conf
+    # 输出结果
+    echo "Nginx 配置测试失败。"
+fi
+```
 
 
