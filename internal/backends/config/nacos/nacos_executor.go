@@ -94,6 +94,7 @@ func (n *NacosConfigExecutor) getConfig(dataId string) (string, error) {
 func RegisterNacosConfigListener() {
 	if properties.Prop == nil || properties.Prop.Config == nil || properties.Prop.Config.Nacos == nil || len(properties.Prop.Config.Nacos) < 1 {
 		zlog.Logger.Warn("Nacos config not found")
+		return
 	}
 	for _, nacosConfig := range properties.Prop.Config.Nacos {
 		var executor NacosConfigExecutor
