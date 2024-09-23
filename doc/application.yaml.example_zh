@@ -9,7 +9,7 @@
 # *******************
 log:
   output: console
-  level: debug
+  level: info
   max-size: 100
   max-age: 30
   max-backups: 10
