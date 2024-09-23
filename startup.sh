@@ -5,7 +5,6 @@ chmod +x config-sync
 if pgrep -f "config-sync" > /dev/null; then
     echo "config-sync is already running"
     exit 0
-else
 fi
 
 echo "config-sync starting..."
