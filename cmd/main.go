@@ -29,8 +29,10 @@ func wait() {
 		switch sig {
 		case syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT:
 			zlog.Logger.Infof("--------- stop signal %v ---------", sig)
+			return
 		default:
 			//zlog.Logger.Debugf("--------- receive signal %v ---------", sig)
+			return
 		}
 
 	}
