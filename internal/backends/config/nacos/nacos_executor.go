@@ -51,7 +51,7 @@ func (n *NacosConfigExecutor) RegisterChangedListener() error {
 				OnChange: func(namespace, group, dataId, data string) {
 					zlog.Logger.Infof("Config changed, dataId: %s, group: %s", dataId, group)
 					// Write to file
-					err = sync.CheckFileChangedAndExecuteCommand(file_util.GetFileName(n.FilePath, propertyName), content, n.Command)
+					err = sync.CheckFileChangedAndExecuteCommand(file_util.GetFileName(n.FilePath, propertyName), data, n.Command)
 					if err != nil {
 						return
 					}
