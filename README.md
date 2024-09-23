@@ -24,10 +24,10 @@
 请参考配置文件示例[英文](https://github.com/heelynn/config-sync/blob/main/doc/application.yaml.example)/[中文](https://github.com/heelynn/config-sync/blob/main/doc/application.yaml.example_zh)
 目前支持的配置项：
 
-`config` : 配置中心配置，目前支持`nacos`
+`config` : 从配置中心同步配置，目前支持`nacos`，`不需要此功能可以不进行配置`
 - 从配置中心拉取的配置，写入本地文件文件路径，拉取成功后会执行command配置的命令
 
-`discovery` : 注册中心配置，目前支持`nacos`
+`discovery` : 从注册中心同步配置，目前支持`nacos`，`不需要此功能可以不进行配置`
 - 注册中心地址，用于定时拉取服务列表，拉取成功后会根据模版文件生成配置文件，并执行command配置的命令
 - 模版文件示例：(以nginx的upstream配置为例[upstream.tmpl](https://github.com/heelynn/config-sync/blob/main/doc/upstream.tmpl.example)，自定义其他模版完全遵照以下命名规则取值即可)
   - {{.Name}} 代表服务名
