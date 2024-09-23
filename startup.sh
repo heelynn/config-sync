@@ -26,4 +26,4 @@ COMMAND="$APP $APP_ARGS"
 
 echo $COMMAND
 # Execute the command
-$COMMAND
+$COMMAND &

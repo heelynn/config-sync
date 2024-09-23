@@ -6,7 +6,7 @@ import (
 )
 
 func init() {
-	if properties.Prop == nil || properties.Prop.Discovery.Nacos == nil || len(properties.Prop.Discovery.Nacos) == 0 {
+	if properties.Prop == nil || properties.Prop.Discovery == nil || properties.Prop.Discovery.Nacos == nil || len(properties.Prop.Discovery.Nacos) == 0 {
 		zlog.Logger.Warnf("nacos discovery is disabled")
 		return
 	}
